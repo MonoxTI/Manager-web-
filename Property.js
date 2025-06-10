@@ -9,3 +9,5 @@ app.use(express.json());
 
 mongoose.connect(process.env.URL);
 
+const db = mongoose.connction;
+db.
