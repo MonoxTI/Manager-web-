@@ -13,10 +13,6 @@ const db = mongoose.connction;
 db.on('error', (err)=> console.error("MonogDB error",err));
 
 const schema = monogodb.schema({
-    PropertyName: {
-        type: String,
-        required: true
-    },
     Location: {
         type: String,
         required: true
@@ -37,4 +33,29 @@ const schema = monogodb.schema({
         type: String,
         required: true
     }
+});
+
+const property = mongoose.model('property',schema);
+db.once('open', async()=>{
+    console.log("Connected to Database");
+    
+    const count = await property.countDocuments();
+    if (count === 0 )
+    {
+        const storage = [
+            {location: '114 firethorn Bougainvillia Montana', Rent: 20000, Rates: 1200,levy: 800, Type:"Residential"}
+        ];
+        try {
+            await property.insertMany(storage);
+            console.log(`Total Property:${storage.length}`);
+        } catch (err) {
+            
+        }
+    }
+})
+
+
+app.listen(port, ()=>{
+    console.log(`Running ${host}:${port}`);
+    
 })
