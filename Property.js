@@ -49,10 +49,23 @@ db.once('open', async()=>{
             await property.insertMany(storage);
             console.log(`Total Property:${storage.length}`);
         } catch (err) {
-            
+            console.err("Insert failed:",err);
         }
     }
-})
+});
+app.get('/',(req,res)=>{
+    res.sendFile('i.html', {root: __dirname});
+});
+
+app.get('/prop',async(req,res)=>{
+    try {
+        const find = await property.find();
+        res.json(find);
+    } catch (err) {
+        res.status(500).json({message:err.message});
+    }
+});
+
 
 
 app.listen(port, ()=>{
